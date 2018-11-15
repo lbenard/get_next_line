@@ -6,7 +6,7 @@
 /*   By: lbenard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 13:13:57 by lbenard           #+#    #+#             */
-/*   Updated: 2018/11/14 09:51:40 by lbenard          ###   ########.fr       */
+/*   Updated: 2018/11/15 08:00:05 by lbenard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,29 @@ int	fd_cmp(const void *fd, const void *list)
 
 int	get_line(t_fd *fd, char **line)
 {
-	char	*buffer;
-	char	*tmp;
-	char	*chr;
-	ssize_t	size;
-	size_t	str_size;
+	t_list	*buffer_list;
+	t_list	*last_list;
+	char	last_buffer[BUFF_SIZE + 1];
+	ssize_t	read_size;
+	size_t	chr_len;
 
-	buffer = NULL;
-	while (!(chr = ft_strchr(fd->buffer, '\n')))
+	buffer_list = ft_lstnew(fd->buffer, ft_strlen(fd->buffer));
+	last_list = buffer_list;
+	fd->buffer[0] = 0;
+	while (!ft_strchr((char*)last_list->content, '\n'))
 	{
-		tmp = buffer;
-		if (tmp)
-		{
-			buffer = ft_strjoin(buffer, fd->buffer);
-			printf("strjoin (%s, %s) = %s\n", tmp, fd->buffer, buffer);
-			free(tmp);
-		}
-		else
-			buffer = ft_strdup(fd->buffer);
-		size = read(fd->fd, fd->buffer, BUFF_SIZE);
-		if (size < 0)
-		{
-			free(buffer);
-			return (ERROR);
-		}
-		fd->buffer[size] = 0;
-		if (size == 0)
+		if ((read_size = read(fd->fd, last_buffer, BUFF_SIZE)) == 0)
 			break ;
+		last_buffer[read_size] = 0;
+		last_list = ft_lstpushback(&last_list,
+			ft_lstnew(last_buffer, read_size + 1));
 	}
-	if (!chr && ft_strlen(buffer) == 0)
-		return (READ_FINISH);
-	str_size = chr - fd->buffer;
-	if (!(buffer = ft_strnew(ft_strlen(buffer) + str_size + 1)))
-		return (ERROR);
-	
-	ft_strcpy(fd->buffer, chr + 1);
-	*line = buffer;
-	return (LINE_READ);
-}
-
-int	get_line(t_fd *fd, char **line)
-{
-	t_list	*buffers;
-
-	while (
+	fd->buffer[0] = 0;
+	*line = ft_lststrjoin(buffer_list, "");
+	chr_len = ft_strchr(*line, '\n') - *line;
+	(*line)[chr_len] = 0;
+	printf("%s\n", *line);
+	return (1);
 }
 
 int	get_next_line(const int fd, char **line)

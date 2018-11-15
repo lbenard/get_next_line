@@ -6,14 +6,14 @@
 /*   By: lbenard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/10 13:16:15 by lbenard           #+#    #+#             */
-/*   Updated: 2018/11/14 09:05:16 by lbenard          ###   ########.fr       */
+/*   Updated: 2018/11/15 04:53:04 by lbenard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 10
+# define BUFF_SIZE 1024
 
 # define ERROR -1
 # define READ_FINISH 0
@@ -24,7 +24,7 @@
 typedef struct	s_fd
 {
 	int		fd;
-	char	buffer[BUFF_SIZE];
+	char	buffer[BUFF_SIZE + 1];
 }				t_fd;
 
 int				get_next_line(const int fd, char **line);
