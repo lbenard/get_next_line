@@ -6,7 +6,7 @@
 /*   By: lbenard <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 14:43:39 by lbenard           #+#    #+#             */
-/*   Updated: 2018/11/15 04:37:30 by lbenard          ###   ########.fr       */
+/*   Updated: 2018/11/19 11:35:05 by lbenard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,11 @@ char					*ft_lststrjoin(const t_list *lst,
 	const char *separator);
 t_list					*ft_lstfind(const t_list *lst, const void *to_find,
 	int (*cmp)(const void*, const void*));
+t_list					*ft_lstcontentfind(const t_list *lst,
+	const void *to_find, size_t to_find_size);
 t_list					*ft_lstpushback(t_list **list, t_list *new);
 t_list					*ft_lstlast(const t_list *list);
 void					ft_lstfree(t_list **list);
+void					ft_lstremove(t_list **list, t_list *to_remove);
 
 #endif
